@@ -23,15 +23,53 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
     private var indexcount = 0
 
     init {
+
+        // Aufgabe 1.2.2:
+
+        // 1. Erstellen und Binden von VAO
+        //Wie legt man Daten auf der GPU an? 3 Schritte
+        //1. Eine ID erzeugen
+        //2. Dann ID aktivieren
+        //3. Dann Daten hochladen
+
+        vao = glGenVertexArrays()
+        glBindBuffer(GL_ARRAY_BUFFER, vao)                                  //glBindBuffer: Man aktivert und bindet den Buffer, GL_ARRAY_BUFFER: in den Daten stehen drinnen (z.B. Position in Vertex)
+        glBufferData(GL_ARRAY_BUFFER, indexdata, GL_STATIC_DRAW)
+
+        vbo = glGenBuffers()  //glGenBuffers: Man generiert eine ID und gibt diese zurück
+        glBindBuffer(GL_ARRAY_BUFFER, vbo)                                  //glBindBuffer: Man aktivert und bindet den Buffer, GL_ARRAY_BUFFER: in den Daten stehen drinnen (z.B. Position in Vertex)
+        glBufferData(GL_ARRAY_BUFFER, vertexdata, GL_STATIC_DRAW)           //glBufferData: Man ladet die Daten in die GPU, GL_STATIC_DRAW: inizialisert die Daten einmal und verändert diese nicht mehr, rendert mehrmals
+        //glEnableVertexAttribArray(0)
+        //glVertexAttribPointer(0, 3, GL_FLOAT, false, 24,0)
+
+        ibo = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, ibo)                                  //glBindBuffer: Man aktivert und bindet den Buffer, GL_ARRAY_BUFFER: in den Daten stehen drinnen (z.B. Position in Vertex)
+        glBufferData(GL_ARRAY_BUFFER, indexdata, GL_STATIC_DRAW)            //glBufferData: Man ladet die Daten in die GPU, GL_STATIC_DRAW: inizialisert die Daten einmal und verändert diese nicht mehr, rendert mehrmals
+
+        //4. VertexAttribute aktivieren & definieren
+        for (i in attributes.indices){
+
+            glEnableVertexAttribArray(i)                                    // glEnableVertexAttribArray:  sagt OpenGL welches VertexAttribut im Moment aktiv ist
+            glVertexAttribPointer(i,attributes[i].n, attributes[i].type, false, attributes[i].stride, attributes[i].offset.toLong() )   // glVertexAttribPointer: Legt fest wie die verschiedenen Vertex Attribute zu definieren sind
+
+        }
+
+        indexcount = indexdata.size
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+        glBindVertexArray(0)
+
         // todo: place your code here
         // todo: generate IDs
-        vao = glGenVertexArrays()
-        vbo = glGenBuffers()
-        ibo = glGenBuffers();
-
         // todo: bind your objects
+        // todo: upload your mesh data
+    }
+
+       /* // todo: bind your objects
         glBindVertexArray(vao)
+
         glBindBuffer(GL_ARRAY_BUFFER,vbo)
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo)
 
         // todo: upload your mesh data
@@ -43,6 +81,8 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
             GL30.glVertexAttribPointer(i,attributes[i].n,attributes[i].type,false, attributes[i].stride, attributes[i].offset)
         }*/
 
+
+        */
     }
 
     /**
@@ -51,9 +91,15 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
     fun render() {
         // todo: place your code here
         // call the rendering method every frame
+
+        //VAO binden
         glBindVertexArray(vao)
-        glDrawElements(GL_TRIANGLES,indexcount, GL_UNSIGNED_INT,0)
-        glBindVertexArray(0)
+
+        //Elemente zeichen
+        glDrawElements(GL_TRIANGLES,5, GL_UNSIGNED_INT,0)
+
+        //Lösen der Bindung
+        glBindVertexArray(0) //reset
     }
 
     /**
