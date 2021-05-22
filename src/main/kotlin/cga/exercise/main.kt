@@ -7,5 +7,3 @@ fun main() {
     game.run()
 }
 
-
-//test123
