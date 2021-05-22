@@ -34,16 +34,12 @@ class Scene(private val window: GameWindow) {
         //1.2.1
         // Vertices (position) und indices definiert mit float und int Array
         val vertexData = floatArrayOf(
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
-                    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
-                    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
-                    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
-                    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+            0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f
         )
-
-        //val att: Array<VertexAttribute?> = arrayOfNulls<VertexAttribute>(2)
-        //att[0] = VertexAttribute(3, GL_FLOAT, 24, 0)
-        //att[1] = VertexAttribute(3, GL_FLOAT, 24, 12)
 
         val ibo = intArrayOf(
             0, 1, 2,
@@ -57,8 +53,6 @@ class Scene(private val window: GameWindow) {
         val vertexzusammen = arrayOf(vertexpos, vertexcol)
 
         meshhaus = Mesh(vertexData, ibo, vertexzusammen);
-        // meshhaus = new Mesh(vertexData, ibo, att);
-
 
     }
 
@@ -69,7 +63,6 @@ class Scene(private val window: GameWindow) {
         staticShader.use();
         meshhaus.render()
 
-
     }
 
     fun update(dt: Float, t: Float) {}
@@ -77,7 +70,6 @@ class Scene(private val window: GameWindow) {
     fun onKey(key: Int, scancode: Int, action: Int, mode: Int) {}
 
     fun onMouseMove(xpos: Double, ypos: Double) {}
-
 
     fun cleanup() {}
 }
