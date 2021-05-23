@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL30
  *
  * Created by Fabian on 16.09.2017.
  */
+
 class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<VertexAttribute>) {
     //private data
     private var vao = 0
@@ -27,45 +28,48 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
 
     init {
 
+        /**1.2.2
+        // 1. Erstellen und Binden von VAO
+        //Wie legt man Daten auf der GPU an? 3 Schritte
+        //1. Eine ID erzeugen
+        //2. Dann ID aktivieren
+        //3. Dann Daten hochladen */
+
+
+        // 1.2.2
+
         indexcount = indexdata.size
 
-        //1.Schritt Generiere ID
-        vao = glGenVertexArrays()
-        vbo = glGenBuffers()
-        ibo = glGenBuffers()
-
-        //2.Schritt Aktiviere ID
+        // VAO generieren und aktiviren
+        vao = glGenVertexArrays()   //vao
         glBindVertexArray(vao)
-        glBindBuffer(GL_ARRAY_BUFFER, vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo)
 
-        // Daten in Buffer hochladen
-        glBufferData(GL_ARRAY_BUFFER, vertexdata, GL_STATIC_DRAW)
+        // VBO generieren, aktiviren und Datei hochladen
+        vbo = glGenBuffers()
+        glBindBuffer(GL_ARRAY_BUFFER, vbo)
+        glBufferData(GL_ARRAY_BUFFER, vertexdata, GL_STATIC_DRAW) //vbo
+        //VBO in VAO beschreiben und aktiviren
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 24, 0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 24, 12);
+        glEnableVertexAttribArray(1);
+
+        // IBO generieren, aktiviren und Datei hochladen
+        ibo = glGenBuffers()        //ibo
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexdata, GL_STATIC_DRAW)
 
 
-        for (i in attributes.indices) {
-            glEnableVertexAttribArray(i)
-            glVertexAttribPointer(
-                i,
-                attributes[i].n,
-                attributes[i].type,
-                false,
-                attributes[i].stride,
-                attributes[i].offset.toLong()
-            )
-        }
-
-        glBindVertexArray(0)
-        glBindBuffer(GL_ARRAY_BUFFER, 0)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+        //for (i in attributes.indices) {
+            //glEnableVertexAttribArray(i)
+          //  glVertexAttribPointer(i, attributes[i].n, attributes[i].type, false, attributes[i].stride, attributes[i].offset.toLong())
+        //}
 
     }
 
-
-    /**
-     * renders the mesh
-     */
+    //1.2.2
+    /**renders the mesh*/
     fun render() {
 
         //binden Vertex Array damit gerendert werden kann
@@ -78,9 +82,7 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
         glBindVertexArray(0)
     }
 
-    /**
-     * Deletes the previously allocated OpenGL objects for this mesh
-     */
+    /** Deletes the previously allocated OpenGL objects for this mesh*/
     fun cleanup() {
         if (ibo != 0)
             glDeleteBuffers(ibo)

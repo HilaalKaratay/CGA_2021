@@ -7,7 +7,6 @@ import cga.framework.GLError
 import cga.framework.GameWindow
 import cga.framework.OBJLoader
 import org.lwjgl.opengl.GL11.*
-import org.lwjgl.opengl.GL20
 
 
 /**
@@ -15,15 +14,22 @@ import org.lwjgl.opengl.GL20
  */
 class Scene(private val window: GameWindow) {
     private val staticShader: ShaderProgram
-    var meshhaus : Mesh
+    //var meshhaus : Mesh
+    var meshname : Mesh
+    var mesh2 : Mesh
 
 
     //scene setup
     init {
+
         staticShader = ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl")
 
         //initial opengl state
-        glClearColor(0.6f, 1.0f, 1.0f, 1.0f); GLError.checkThrow()
+       // glClearColor(0.6f, 1.0f, 1.0f, 1.0f); GLError.checkThrow()
+
+        //schwarzer Hintergrund
+        glClearColor (0.0f, 0.0f, 0.0f, 1.0f); GLError . checkThrow ()
+
         glDisable(GL_CULL_FACE); GLError.checkThrow()
         //glFrontFace(GL_CCW); GLError.checkThrow()
         //glCullFace(GL_BACK); GLError.checkThrow()
@@ -33,35 +39,90 @@ class Scene(private val window: GameWindow) {
 
         //1.2.1
         // Vertices (position) und indices definiert mit float und int Array
-        val vertexData = floatArrayOf(
+        val vertexDataHaus = floatArrayOf(
             -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f
+             0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+             0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+             0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f
         )
 
-        val ibo = intArrayOf(
+       val vertexDataInitialien = floatArrayOf(
+
+            0.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f,
+            0.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f
+        )
+
+        val iboHaus = intArrayOf(
             0, 1, 2,
             0, 2, 4,
             4, 2, 3
         )
 
-        val vertexpos = VertexAttribute(3, GL20.GL_FLOAT, 24, 0)     //Attribut für Position
-        val vertexcol = VertexAttribute(3, GL20.GL_FLOAT, 24, 12)    //Attribut für Farbe
+        val iboInitialien = intArrayOf(
+            0, 1, 2,
+            2, 3, 4
+        )
 
+        val vertexpos = VertexAttribute(3, GL_FLOAT, 24, 0)     //Attribut für Position
+        val vertexcol = VertexAttribute(3, GL_FLOAT, 24, 12)    //Attribut für Farbe
         val vertexzusammen = arrayOf(vertexpos, vertexcol)
 
-        meshhaus = Mesh(vertexData, ibo, vertexzusammen);
+        //meshhaus = Mesh(vertexDataHaus, iboHaus, vertexzusammen);
+        meshname = Mesh(vertexDataInitialien, iboInitialien, vertexzusammen);
 
-    }
+        //Aufgabe 1.2.5:
+        //glEnable ( GL_CULL_FACE )
+        //glFrontFace ( GL_CCW )
+        //glCullFace ( GL_BACK )
 
+
+
+        // Aufgabe 1.3 Object Handeling
+
+        // 1.3.1 a):
+        // Objekt laden und ein Mesh erzeugen
+        val res: OBJLoader.OBJResult = OBJLoader.loadOBJ("assets/models/sphere.obj")  //
+
+        // 1.3.1 b):
+        //Erstes Mesh vom ersten Objekt erhalten
+        val objMesh: OBJLoader.OBJMesh = res.objects[0].meshes[0]
+
+        // 1.3.3 d):
+        //Mesh erstellen und VertexAttribute definieren, alle 3 Attribute anlegen damit Shader es nutzen kann
+
+        val attrPos =   VertexAttribute(3, GL_FLOAT, 32, 0)           //position
+        val attrTC =    VertexAttribute(2, GL_FLOAT, 23, 12)      //textureCoordinate
+        val attrNorm =  VertexAttribute(3, GL_FLOAT, 32, 20)      //normalval
+
+        val vertexAttributes = arrayOf<VertexAttribute>(attrPos, attrTC, attrNorm)
+
+        //1.3.1 c):
+        //Vertex- und Indexdaten als Arrays definieren
+        val vertexData = objMesh.vertexData //get vertexdata
+        val indexData = objMesh.indexData   //get indexddata
+
+        //1.3.1 d)
+        // use plain data arrays to create a mesh
+        mesh2 = Mesh(objMesh.vertexData, objMesh.indexData, vertexAttributes)
+
+}
+
+    //1.2.3
     fun render(dt: Float, t: Float) {
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
         //1.2.3
+        //welcher Shader = staticShader
         staticShader.use();
-        meshhaus.render()
+
+        //meshhaus.render()
+        //meshname.render()
+
+        mesh2.render()
 
     }
 
@@ -73,4 +134,3 @@ class Scene(private val window: GameWindow) {
 
     fun cleanup() {}
 }
-
