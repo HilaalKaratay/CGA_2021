@@ -35,10 +35,7 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
         //2. Dann ID aktivieren
         //3. Dann Daten hochladen */
 
-
         // 1.2.2
-
-        indexcount = indexdata.size
 
         // VAO generieren und aktiviren
         vao = glGenVertexArrays()   //vao
@@ -60,6 +57,7 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexdata, GL_STATIC_DRAW)
 
+        indexcount = indexdata.size
 
         //for (i in attributes.indices) {
             //glEnableVertexAttribArray(i)
@@ -69,7 +67,6 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
     }
 
     //1.2.2
-    /**renders the mesh*/
     fun render() {
 
         //binden Vertex Array damit gerendert werden kann
