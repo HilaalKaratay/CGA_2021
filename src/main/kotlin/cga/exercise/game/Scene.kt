@@ -103,7 +103,7 @@ class Scene(private val window: GameWindow) {
         // Objekt laden und ein Mesh erzeugen
         val res: OBJLoader.OBJResult = OBJLoader.loadOBJ("assets/models/sphere.obj", false, false)  //
 
-       // data class Vertex(val position: Vector3f, val texCoord: Vector2f, val normal: Vector3f)
+       data class Vertex(val position: Vector3f, val texCoord: Vector2f, val normal: Vector3f)
 
         // 1.3.1 b):
         //Erstes Mesh vom ersten Objekt erhalten
