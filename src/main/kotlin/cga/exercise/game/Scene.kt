@@ -6,17 +6,21 @@ import cga.exercise.components.shader.ShaderProgram
 import cga.framework.GLError
 import cga.framework.GameWindow
 import cga.framework.OBJLoader
+import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL11.*
+import javax.swing.Renderer
 
 
 class Scene(private val window: GameWindow) {
     private val staticShader: ShaderProgram = ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl")
-
+    private val staticTron: ShaderProgram = ShaderProgram("assets/shaders/tron_vert.glsl","assets/shaders/tron_frag.glsl")
     var meshhaus : Mesh
     var meshname : Mesh
     var meshkreis : Mesh
+    private val m4Boden = Matrix4f()
+    private val m4Kugel = Matrix4f()
 
     //scene setup
     init {
@@ -48,13 +52,6 @@ class Scene(private val window: GameWindow) {
             0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
             -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f)
 
-       /* Wird nicht benötigt kommt von OBJloader
-        var vertexDataKreis = floatArrayOf(
-            1.0f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f,  1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-            -1.0f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f,  -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f)*/
-
         val iboHaus = intArrayOf(
             0, 1, 2,
             0, 2, 4,
@@ -82,6 +79,12 @@ class Scene(private val window: GameWindow) {
         // Aufgabe 1.3 Object Handeling
         // 1.3.1 a) Objekt laden und ein Mesh erzeugen
         val res: OBJLoader.OBJResult = OBJLoader.loadOBJ("assets/models/sphere.obj", false, false)
+        val ground: OBJLoader.OBJResult =OBJLoader.loadOBJ("assets/models/ground.obj",false,false)
+
+        m4Boden.scale(0.3f)
+        m4Boden.rotateX(90f)
+
+        m4Kugel.scale(0.5f)
 
         // 1.3.1 b) Erstes Mesh vom ersten Objekt erhalten
         val objMesh: OBJLoader.OBJMesh = res.objects[0].meshes[0]
@@ -104,22 +107,24 @@ class Scene(private val window: GameWindow) {
         //1.3.1 d)
         // use plain data arrays to create a mesh
         meshkreis = Mesh(objMesh.vertexData,objMesh.indexData,vertexAttributes)
-
     }
 
     fun render(dt: Float, t: Float) {
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        staticShader.setUniform("model_matrix", m4Boden, false)
+        staticShader.setUniform("model_matrix", m4Kugel, false)
 
-        //1.2.3
-        //welcher Shader = staticShader
+        //1.2.3 welcher Shader = staticShader
         staticShader.use()
+        staticTron.use()
 
         //meshhaus.render()
         //meshname.render()
 
         //1.3.1 e)
         meshkreis.render()
-
+        m4Boden.render(staticShader)
+        m4Kugel.render(staticShader)
     }
 
     fun update(dt: Float, t: Float) {}
