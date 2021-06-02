@@ -4,8 +4,7 @@ import org.joml.*
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
-import org.lwjgl.opengl.GL20.glUniform4f
-import org.lwjgl.opengl.GL20.glUniformMatrix4fv
+import org.lwjgl.opengl.GL20.*
 import java.lang.reflect.Array.get
 import java.nio.Buffer
 import java.nio.FloatBuffer
@@ -48,6 +47,7 @@ class ShaderProgram(vertexShaderPath: String, fragmentShaderPath: String) {
         val loc = GL20.glGetUniformLocation(programID, name)
         if (loc != -1) {
             GL20.glUniform1f(loc, value)
+
             return true
         }
         return false

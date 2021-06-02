@@ -10,6 +10,7 @@ import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL11.*
+import javax.swing.text.Position
 
 
 class Scene(private val window: GameWindow) {
@@ -19,9 +20,8 @@ class Scene(private val window: GameWindow) {
     var meshname : Mesh
     var meshkreis : Mesh
     var boden : Mesh
-    //var boden: Mesh
     private val m4Boden = Matrix4f()
-    private var m4Kugel = Matrix4f()
+    private val m4Kugel = Matrix4f()
 
 
     init {
@@ -93,8 +93,8 @@ class Scene(private val window: GameWindow) {
         OBJLoader.reverseWinding(objSphere)
         OBJLoader.recalculateNormals(objSphere)
 
-       /* OBJLoader.reverseWinding(objGround)
-        OBJLoader.recalculateNormals(objGround)*/
+        //OBJLoader.reverseWinding(objGround)
+       // OBJLoader.recalculateNormals(objGround)
 
         // 1.3.3 d) Mesh erstellen und VertexAttribute definieren, alle 3 Attribute anlegen damit Shader diese nutzen kann
         val attrPos =   VertexAttribute(3, GL_FLOAT, 8*4, 0)       //position
@@ -103,22 +103,24 @@ class Scene(private val window: GameWindow) {
 
         val vertexAttributes = arrayOf<VertexAttribute>(attrPos, attrTC, attrNorm)
 
-        //1.3.1 c): Vertex- und Indexdaten als Arrays definieren
+       //1.3.1 c): Vertex- und Indexdaten als Arrays definieren
         var vertexDataKreis = objSphere.vertexData //get vertexdata
         var indexDataKreis = objSphere.indexData   //get indexddata
 
         var vertexDataGround = objGround.vertexData //get vertexdata
         var indexDataGround= objGround.indexData   //get indexddata
 
+        m4Boden.scale(0.03f)
+        m4Boden.rotateX(90f)
+
+        m4Kugel.scale(0.5f)
         //1.3.1 d)
         // use plain data arrays to create a mesh
         meshkreis = Mesh(objSphere.vertexData,objSphere.indexData,vertexAttributes)
         boden = Mesh(objGround.vertexData,objGround.indexData,vertexAttributes)
 
-        m4Boden.scale(0.3f)
-        m4Boden.rotateX(90.0f)
 
-        m4Kugel.scale(0.5f)
+
     }
 
     fun render(dt: Float, t: Float) {
@@ -131,16 +133,11 @@ class Scene(private val window: GameWindow) {
         //meshhaus.render()
         //meshname.render()
 
-        //boden.render()
         meshkreis.render()
-        staticTron.setUniform("model", m4Boden, false)
 
+        staticTron.setUniform("model_matrix", m4Boden, false)
         boden.render()
         staticTron.setUniform("model_matrix", m4Kugel, false)
-        //1.3.1 e)
-
-
-
     }
 
     fun update(dt: Float, t: Float) {}
