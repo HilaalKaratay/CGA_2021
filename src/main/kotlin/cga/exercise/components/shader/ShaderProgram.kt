@@ -4,13 +4,14 @@ import org.joml.*
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
+import org.lwjgl.opengl.GL20.glUniform4f
+import org.lwjgl.opengl.GL20.glUniformMatrix4fv
+import java.lang.reflect.Array.get
+import java.nio.Buffer
 import java.nio.FloatBuffer
 import java.nio.file.Files
 import java.nio.file.Paths
 
-/**
- * Created by Fabian on 16.09.2017.
- */
 class ShaderProgram(vertexShaderPath: String, fragmentShaderPath: String) {
     private var programID: Int = 0
     //Matrix buffers for setting matrix uniforms. Prevents allocation for each uniform
@@ -32,6 +33,8 @@ class ShaderProgram(vertexShaderPath: String, fragmentShaderPath: String) {
         GL20.glDeleteProgram(programID)
     }
 
+
+
     //setUniform() functions are added later during the course
     // float vector uniforms
     /**
@@ -40,7 +43,7 @@ class ShaderProgram(vertexShaderPath: String, fragmentShaderPath: String) {
      * @param value Value
      * @return returns false if the uniform was not found in the shader
      */
-    fun setUniform(name: String, value: Matrix4f): Boolean {
+    fun setUniform(name: String, value: Float ): Boolean {
         if (programID == 0) return false
         val loc = GL20.glGetUniformLocation(programID, name)
         if (loc != -1) {
@@ -50,6 +53,16 @@ class ShaderProgram(vertexShaderPath: String, fragmentShaderPath: String) {
         return false
     }
 
+    fun setUniform(name: String, value: Matrix4f, transpose: Boolean): Boolean {
+        if (programID == 0) return false
+        val loc = GL20.glGetUniformLocation(programID, name)
+        if (loc != -1) {
+            value.get(m4x4buf)
+            glUniformMatrix4fv(loc,transpose, m4x4buf)
+            return true
+        }
+        return false
+    }
 
 
     /**
