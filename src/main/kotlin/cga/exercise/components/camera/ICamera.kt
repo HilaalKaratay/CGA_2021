@@ -5,6 +5,22 @@ import org.joml.Matrix4f
 
 interface ICamera {
 
+    var viewMat: Matrix4f
+    var projMat: Matrix4f
+
+    fun Camera() {
+        viewMat = Matrix4f()
+        projMat = Matrix4f()
+    }
+
+    fun getViewMatrix(): Matrix4f? {
+        return viewMat
+    }
+
+    fun getProjectionMatrix(): Matrix4f? {
+        return projMat
+    }
+
     /*
      * Calculate the ViewMatrix according the lecture
      * values needed:
@@ -24,6 +40,7 @@ interface ICamera {
      */
     fun getCalculateProjectionMatrix(): Matrix4f
 
-    fun bind(shader: ShaderProgram)
+    fun bind(shaderProgram: ShaderProgram)
 
 }
+

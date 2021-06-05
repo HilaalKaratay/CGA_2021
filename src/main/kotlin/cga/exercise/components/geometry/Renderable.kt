@@ -13,4 +13,6 @@ class Renderable : Transformable() {
     override fun render(shaderProgram: ShaderProgram)  {
 
     }
+
 }
+
