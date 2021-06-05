@@ -167,6 +167,7 @@ open class Transformable(var modelMatrix: Matrix4f = Matrix4f(), var parent: Tra
 
     }
 
+
     /**
      * Returns object model matrix
      * @return modelMatrix

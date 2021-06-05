@@ -19,6 +19,7 @@ class Scene(private val window: GameWindow) {
     var meshhaus : Mesh
     var meshname : Mesh
     var meshkreis : Mesh
+
     var boden : Mesh
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
