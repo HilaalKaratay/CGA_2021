@@ -12,8 +12,6 @@ class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Flo
         farPlane = 100f
     }
 
-
-
    override fun calculateViewMatrix(): Matrix4f {
        viewMat.identity()
        viewMat = Matrix4f().lookAt(getWorldPosition(),getWorldPosition().sub(getWorldZAxis()),getWorldYAxis())
@@ -30,9 +28,5 @@ class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Flo
         shaderProgram.setUniform("view_matrix", calculateViewMatrix(), false)
         shaderProgram.setUniform("projection_matrix", getCalculateProjectionMatrix(), false)
     }
-
-
-
-
 
 }

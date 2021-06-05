@@ -22,6 +22,7 @@ interface ITransformable {
 
     fun getPosition(): Vector3f ;
 
+
     fun getWorldPosition(): Vector3f;
 
     fun getXAxis(): Vector3f;

@@ -1,6 +1,7 @@
 package cga.exercise.game
 
 import cga.exercise.components.geometry.Mesh
+import cga.exercise.components.geometry.Renderable
 import cga.exercise.components.geometry.VertexAttribute
 import cga.exercise.components.shader.ShaderProgram
 import cga.framework.GLError
@@ -9,8 +10,8 @@ import cga.framework.OBJLoader
 import org.joml.Matrix4f
 import org.joml.Vector2f
 import org.joml.Vector3f
+import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11.*
-import javax.swing.text.Position
 
 
 class Scene(private val window: GameWindow) {
@@ -23,6 +24,8 @@ class Scene(private val window: GameWindow) {
     var boden : Mesh
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
+
+    private val cycle: Renderable? = null
 
 
     init {
@@ -141,7 +144,24 @@ class Scene(private val window: GameWindow) {
         staticTron.setUniform("model_matrix", m4Kugel, false)
     }
 
-    fun update(dt: Float, t: Float) {}
+    fun update(dt: Float, t: Float) {
+
+        if (window.getKeyState(GLFW.GLFW_KEY_W)) {
+            cycle?.translateLocal(Vector3f(0.0f, 0.0f, -0.1f))
+        }
+
+        if (window.getKeyState(GLFW.GLFW_KEY_A)) {
+            cycle?.rotateLocal(0.0f, 0.01f, 0.0f)
+        }
+
+        if (window.getKeyState(GLFW.GLFW_KEY_S)) {
+            cycle?.translateLocal(Vector3f(0.0f, 0.0f, 0.1f))
+        }
+
+        if (window.getKeyState(GLFW.GLFW_KEY_D)) {
+            cycle?.rotateLocal(0.0f, -0.01f, 0.0f)
+        }
+    }
 
     fun onKey(key: Int, scancode: Int, action: Int, mode: Int) {}
 
