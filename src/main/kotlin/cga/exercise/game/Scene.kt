@@ -144,6 +144,7 @@ class Scene(private val window: GameWindow) {
         staticTron.setUniform("model_matrix", m4Kugel, false)
     }
 
+    /** Aufgabe 2.5*/
     fun update(dt: Float, t: Float) {
 
         if (window.getKeyState(GLFW.GLFW_KEY_W)) {
