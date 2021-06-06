@@ -1,5 +1,6 @@
 package cga.exercise.game
 
+import cga.exercise.components.camera.TronCamera
 import cga.exercise.components.geometry.Mesh
 import cga.exercise.components.geometry.Renderable
 import cga.exercise.components.geometry.VertexAttribute
@@ -26,6 +27,8 @@ class Scene(private val window: GameWindow) {
     private val m4Kugel = Matrix4f()
 
     private val cycle: Renderable? = null
+
+    private var tronCamera: TronCamera? = null
 
 
     init {
@@ -122,6 +125,11 @@ class Scene(private val window: GameWindow) {
         // use plain data arrays to create a mesh
         meshkreis = Mesh(objSphere.vertexData,objSphere.indexData,vertexAttributes)
         boden = Mesh(objGround.vertexData,objGround.indexData,vertexAttributes)
+
+        /** 2.4.2 */
+        tronCamera = TronCamera()
+        
+
 
 
 

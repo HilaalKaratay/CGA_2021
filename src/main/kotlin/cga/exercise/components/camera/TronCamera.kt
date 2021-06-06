@@ -3,7 +3,8 @@ package cga.exercise.components.camera
 import cga.exercise.components.shader.ShaderProgram
 import org.joml.Matrix4f
 
-class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Float, var farPlane: Float) : ICamera {
+/** 2.4.1 */
+abstract class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Float, var farPlane: Float) : ICamera {
 
     fun TronCam() {
         fieldOfView = Math.toRadians(90.0).toFloat()
@@ -14,11 +15,11 @@ class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Flo
 
    override fun calculateViewMatrix(): Matrix4f {
        viewMat.identity()
-       viewMat = Matrix4f().lookAt(getWorldPosition(),getWorldPosition().sub(getWorldZAxis()),getWorldYAxis())
+       viewMat = Matrix4f().lookAt( 0 , 0 , 0 )
        return viewMat
    }
 
-    override fun getCalculateProjectionMatrix(): Matrix4f {
+   override fun getCalculateProjectionMatrix(): Matrix4f {
         projMat.identity()
         projMat.perspective(fieldOfView, aspect, nearPlane, farPlane)
         return projMat
@@ -30,3 +31,4 @@ class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Flo
     }
 
 }
+

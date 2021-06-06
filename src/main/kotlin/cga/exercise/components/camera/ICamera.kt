@@ -28,7 +28,8 @@ interface ICamera {
      *  - center –> the point in space to look at
      *  - up –> the direction of 'up'
      */
-    fun getCalculateViewMatrix(): Matrix4f
+
+    fun calculateViewMatrix(): Matrix4f
 
     /*
      * Calculate the ProjectionMatrix according the lecture
