@@ -53,6 +53,8 @@ class ShaderProgram(vertexShaderPath: String, fragmentShaderPath: String) {
         return false
     }
 
+
+    /** 2.1.2, eigene Methode erstellt */
     fun setUniform(name: String, value: Matrix4f, transpose: Boolean): Boolean {
         if (programID == 0) return false
         val loc = GL20.glGetUniformLocation(programID, name)

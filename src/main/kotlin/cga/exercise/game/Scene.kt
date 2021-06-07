@@ -18,19 +18,24 @@ import org.lwjgl.opengl.GL11.*
 
 class Scene(private val window: GameWindow) {
     val staticShader: ShaderProgram = ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl")
-    val staticTron: ShaderProgram = ShaderProgram("assets/shaders/tron_vert.glsl","assets/shaders/tron_frag.glsl")
+
     var meshhaus : Mesh
     var meshname : Mesh
-    var kreisRend : Renderable
+
+    /** 2.1.2 */
+    val staticTron: ShaderProgram = ShaderProgram("assets/shaders/tron_vert.glsl","assets/shaders/tron_frag.glsl")
     var kreis : Mesh
+    var kreisRend : Renderable /** 2.3 */
 
     var boden : Mesh
-    var bodenRend : Renderable
+    var bodenRend : Renderable /** 2.3 */
 
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
 
     private val cycle: Renderable? = null
+
+    private var tronCam: TronCamera? = null
 
     init {
 
@@ -88,12 +93,14 @@ class Scene(private val window: GameWindow) {
         // Aufgabe 1.3 Object Handeling
         // 1.3.1 a) Objekt laden und ein Mesh erzeugen
         val sphere: OBJLoader.OBJResult = OBJLoader.loadOBJ("assets/models/sphere.obj", false, false)
-        val ground: OBJLoader.OBJResult =OBJLoader.loadOBJ("assets/models/ground.obj",false,false)
-
 
         // 1.3.1 b) Erstes Mesh vom ersten Objekt erhalten
         val objSphere: OBJLoader.OBJMesh = sphere.objects[0].meshes[0]
         val objSphereList: MutableList<OBJLoader.OBJMesh> = sphere.objects[0].meshes
+
+
+        /** 2.1 */
+        val ground: OBJLoader.OBJResult =OBJLoader.loadOBJ("assets/models/ground.obj",false,false)
 
         val objGround: OBJLoader.OBJMesh= ground.objects[0].meshes[0]
         val objGroundList: MutableList<OBJLoader.OBJMesh> =ground.objects[0].meshes
@@ -118,9 +125,9 @@ class Scene(private val window: GameWindow) {
         var vertexDataGround = objGround.vertexData //get vertexdata
         var indexDataGround= objGround.indexData   //get indexddata
 
+        /** 2.1.1 */
        /* m4Boden.scale(0.03f)
         m4Boden.rotateX(90f)*/
-
 
         boden = Mesh(objGround.vertexData, objGround.indexData, vertexAttributes)
         bodenRend= Renderable(meshList= )
@@ -136,10 +143,8 @@ class Scene(private val window: GameWindow) {
 
 
         /** 2.4.2 */
-        var tronCamera : TronCamera
-        tronCamera.translateLocal()
-        
-
+        tronCam = TronCamera(90, 0, 0, 0)
+        tronCam.translateLocal(Vector3f (0.0f, 2.0f, 4.0f))
 
 
 
@@ -155,14 +160,16 @@ class Scene(private val window: GameWindow) {
         //meshhaus.render()
         //meshname.render()
 
-        kreis.render(staticTron)
+        /** 2.1.2 */
 
+        kreis.render(staticTron)
         staticTron.setUniform("model_matrix", m4Boden, false)
+
         bodenRend.render(staticTron)
         staticTron.setUniform("model_matrix", m4Kugel, false)
     }
 
-    /** Aufgabe 2.5*/
+    /** 2.5*/
     fun update(dt: Float, t: Float) {
 
         if (window.getKeyState(GLFW.GLFW_KEY_W)) {

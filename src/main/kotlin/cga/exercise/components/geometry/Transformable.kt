@@ -4,7 +4,8 @@ import cga.exercise.game.Scene
 import org.joml.Matrix4f
 import org.joml.Vector3f
 
-
+/** 2.2 */
+                                                                    /** 2.2.2 */
 open class Transformable(var modelMatrix: Matrix4f = Matrix4f(), var parent: Transformable? = null) {
 
     /**
