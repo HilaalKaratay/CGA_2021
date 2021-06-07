@@ -21,8 +21,12 @@ class Scene(private val window: GameWindow) {
     val staticTron: ShaderProgram = ShaderProgram("assets/shaders/tron_vert.glsl","assets/shaders/tron_frag.glsl")
     var meshhaus : Mesh
     var meshname : Mesh
-    var meshkreis : Renderable
-    var boden : Renderable
+    var kreisRend : Renderable
+    var kreis : Mesh
+
+    var boden : Mesh
+    var bodenRend : Renderable
+
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
 
@@ -94,8 +98,6 @@ class Scene(private val window: GameWindow) {
         val objGround: OBJLoader.OBJMesh= ground.objects[0].meshes[0]
         val objGroundList: MutableList<OBJLoader.OBJMesh> =ground.objects[0].meshes
 
-        val objGroundList1 : MutableList<Mesh> =
-
         OBJLoader.reverseWinding(objSphere)
         OBJLoader.recalculateNormals(objSphere)
 
@@ -119,11 +121,19 @@ class Scene(private val window: GameWindow) {
        /* m4Boden.scale(0.03f)
         m4Boden.rotateX(90f)*/
 
+
+        boden = Mesh(objGround.vertexData, objGround.indexData, vertexAttributes)
+        bodenRend= Renderable(meshList= )
+        bodenRend.meshList.add(boden)
+
+
         m4Kugel.scale(0.5f)
         //1.3.1 d)
         // use plain data arrays to create a mesh
-        meshkreis = Renderable(objSphereList)
-        boden = Renderable(objGroundList)
+        kreis = Mesh (objSphere.vertexData,objSphere.indexData,vertexAttributes)
+        kreisRend = Renderable(meshList = )
+        kreisRend.meshList.add(kreis)
+
 
         /** 2.4.2 */
         var tronCamera : TronCamera
@@ -140,15 +150,15 @@ class Scene(private val window: GameWindow) {
 
         //1.2.3 welcher Shader = staticShader
         //staticShader.use()
-        staticTron.use()
+        //staticTron.use()
 
         //meshhaus.render()
         //meshname.render()
 
-        meshkreis.render()
+        kreis.render(staticTron)
 
         staticTron.setUniform("model_matrix", m4Boden, false)
-        boden.render()
+        bodenRend.render(staticTron)
         staticTron.setUniform("model_matrix", m4Kugel, false)
     }
 
