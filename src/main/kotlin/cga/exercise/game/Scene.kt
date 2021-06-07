@@ -15,21 +15,18 @@ import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11.*
 
 
+
 class Scene(private val window: GameWindow) {
     val staticShader: ShaderProgram = ShaderProgram("assets/shaders/simple_vert.glsl", "assets/shaders/simple_frag.glsl")
     val staticTron: ShaderProgram = ShaderProgram("assets/shaders/tron_vert.glsl","assets/shaders/tron_frag.glsl")
     var meshhaus : Mesh
     var meshname : Mesh
-    var meshkreis : Mesh
-
-    var boden : Mesh
+    var meshkreis : Renderable
+    var boden : Renderable
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
 
     private val cycle: Renderable? = null
-
-    private var tronCamera: TronCamera? = null
-
 
     init {
 
@@ -97,6 +94,8 @@ class Scene(private val window: GameWindow) {
         val objGround: OBJLoader.OBJMesh= ground.objects[0].meshes[0]
         val objGroundList: MutableList<OBJLoader.OBJMesh> =ground.objects[0].meshes
 
+        val objGroundList1 : MutableList<Mesh> =
+
         OBJLoader.reverseWinding(objSphere)
         OBJLoader.recalculateNormals(objSphere)
 
@@ -111,23 +110,24 @@ class Scene(private val window: GameWindow) {
         val vertexAttributes = arrayOf<VertexAttribute>(attrPos, attrTC, attrNorm)
 
        //1.3.1 c): Vertex- und Indexdaten als Arrays definieren
-        var vertexDataKreis = objSphere.vertexData //get vertexdata
+        var vertexDataKreis  = objSphere.vertexData //get vertexdata
         var indexDataKreis = objSphere.indexData   //get indexddata
 
         var vertexDataGround = objGround.vertexData //get vertexdata
         var indexDataGround= objGround.indexData   //get indexddata
 
-        m4Boden.scale(0.03f)
-        m4Boden.rotateX(90f)
+       /* m4Boden.scale(0.03f)
+        m4Boden.rotateX(90f)*/
 
         m4Kugel.scale(0.5f)
         //1.3.1 d)
         // use plain data arrays to create a mesh
-        meshkreis = Mesh(objSphere.vertexData,objSphere.indexData,vertexAttributes)
-        boden = Mesh(objGround.vertexData,objGround.indexData,vertexAttributes)
+        meshkreis = Renderable(objSphereList)
+        boden = Renderable(objGroundList)
 
         /** 2.4.2 */
-        tronCamera = TronCamera()
+        var tronCamera : TronCamera
+        tronCamera.translateLocal()
         
 
 

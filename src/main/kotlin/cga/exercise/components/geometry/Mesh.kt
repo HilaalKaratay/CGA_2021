@@ -1,6 +1,6 @@
 package cga.exercise.components.geometry
 
-import org.lwjgl.opengl.GL15
+import cga.exercise.components.shader.ShaderProgram
 import org.lwjgl.opengl.GL30
 import org.lwjgl.opengl.GL30.*
 
@@ -57,7 +57,7 @@ class Mesh(vertexdata: FloatArray, indexdata: IntArray, attributes: Array<Vertex
     }
 
     //renders the mesh
-    fun render() {
+    fun render(shaderProgram: ShaderProgram) {
         // todo: place your code here call the rendering method every frame
 
         //VAO binden

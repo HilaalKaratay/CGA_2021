@@ -5,7 +5,7 @@ import org.joml.Matrix4f
 import org.joml.Vector3f
 
 
-open class Transformable(var modelMatrix: Matrix4f = Matrix4f(), var parent: Tranformable? = null) {
+open class Transformable(var modelMatrix: Matrix4f = Matrix4f(), var parent: Transformable? = null) {
 
     /**
      * Rotates object around its own origin.
@@ -13,7 +13,7 @@ open class Transformable(var modelMatrix: Matrix4f = Matrix4f(), var parent: Tra
      * @param yaw radiant angle around y-axis ccw
      * @param roll radiant angle around z-axis ccw
      */
-    fun rotateLocal(pitch: Float, yaw: Float, roll: Float) {
+    open fun rotateLocal(pitch: Float, yaw: Float, roll: Float) {
         modelMatrix.rotateX(Math.toRadians(pitch.toDouble()).toFloat())
         modelMatrix.rotateY(Math.toRadians(yaw.toDouble()).toFloat())
         modelMatrix.rotateZ(Math.toRadians(roll.toDouble()).toFloat())
