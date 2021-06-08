@@ -8,5 +8,6 @@ interface IRenderable {
 
     fun rotateLocal(pitch: Float, yaw: Float, roll: Float) {
     }
+
 }
 

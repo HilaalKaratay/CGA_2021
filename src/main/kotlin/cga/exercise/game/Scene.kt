@@ -123,21 +123,21 @@ class Scene(private val window: GameWindow) {
 
 
         boden = Mesh(objGround.vertexData, objGround.indexData, vertexAttributes)
-        bodenRend= Renderable(meshList= )
-        bodenRend.meshList.add(boden)
+        bodenRend= Renderable(meshList = objGroundList)
+       // bodenRend.meshList.add(boden)
 
 
         m4Kugel.scale(0.5f)
         //1.3.1 d)
         // use plain data arrays to create a mesh
         kreis = Mesh (objSphere.vertexData,objSphere.indexData,vertexAttributes)
-        kreisRend = Renderable(meshList = )
-        kreisRend.meshList.add(kreis)
+        kreisRend = Renderable(kreis)
+       // kreisRend.meshList.add()
 
 
         /** 2.4.2 */
         var tronCamera : TronCamera
-        tronCamera.translateLocal()
+       // tronCamera.translateLocal()
         
 
 

@@ -368,6 +368,7 @@ object OBJLoader {
             return indices.size
         }
 
+
     }
 
     class OBJObject {
