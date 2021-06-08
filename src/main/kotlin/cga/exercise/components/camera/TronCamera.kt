@@ -8,7 +8,7 @@ import org.joml.Matrix4f
 class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Float, var farPlane: Float) :Transformable(), ICamera {
 
     fun TronCam() {
-        fieldOfView = Math.toRadians(90.0).toFloat()
+        this.fieldOfView = Math.toRadians(90.0).toFloat()
         aspect = 16.0f / 9.0f
         nearPlane = 0.1f
         farPlane = 100f
@@ -37,6 +37,10 @@ class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Flo
         shaderProgram.setUniform("view_matrix", calculateViewMatrix(), false)
         shaderProgram.setUniform("projection_matrix", getCalculateProjectionMatrix(), false)
     }
+
+
+
+
 
 }
 

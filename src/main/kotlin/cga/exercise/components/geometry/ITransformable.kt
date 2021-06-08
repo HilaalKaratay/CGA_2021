@@ -11,7 +11,7 @@ interface ITransformable {
     fun rotateAroundPoint(pitch: Float, yaw: Float, roll: Float, altMidpoint: Vector3f) {
     }
 
-    fun translateLocal(deltaPos: Vector3f) {
+    fun translateLocal(deltaPos: Vector3f?) {
     }
 
     fun translateGlobal(deltaPos: Vector3f) {

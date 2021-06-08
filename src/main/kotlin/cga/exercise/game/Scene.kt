@@ -26,7 +26,7 @@ class Scene(private val window: GameWindow) {
 
     var boden : Mesh
     var bodenRend : Renderable
-   // private val tronCamera : TronCamera = TODO()
+
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
 
@@ -101,6 +101,9 @@ class Scene(private val window: GameWindow) {
         OBJLoader.reverseWinding(objSphere)
         OBJLoader.recalculateNormals(objSphere)
 
+        //OBJLoader.reverseWinding(objGround)
+       // OBJLoader.recalculateNormals(objGround)
+
         // 1.3.3 d) Mesh erstellen und VertexAttribute definieren, alle 3 Attribute anlegen damit Shader diese nutzen kann
         val attrPos =   VertexAttribute(3, GL_FLOAT, 8*4, 0)       //position
         val attrTC =    VertexAttribute(2, GL_FLOAT, 8*4, 12)      //textureCoordinate
@@ -133,7 +136,11 @@ class Scene(private val window: GameWindow) {
 
 
         /** 2.4.2 */
-        tronCamera.translateLocal(Vector3f(0f,0f,4f))
+        var tronCamera : TronCamera
+        tronCamera.translateLocal()
+        
+
+
 
 
     }
