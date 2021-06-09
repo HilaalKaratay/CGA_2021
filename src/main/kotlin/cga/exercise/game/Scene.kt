@@ -29,7 +29,6 @@ class Scene(private val window: GameWindow) {
 
     private val m4Boden = Matrix4f()
     private val m4Kugel = Matrix4f()
-
     private val cycle: Renderable? = null
 
     init {
@@ -96,7 +95,10 @@ class Scene(private val window: GameWindow) {
         val objSphereList: MutableList<OBJLoader.OBJMesh> = sphere.objects[0].meshes
 
         val objGround: OBJLoader.OBJMesh= ground.objects[0].meshes[0]
-        val objGroundList: MutableList<OBJLoader.OBJMesh> =ground.objects[0].meshes
+        val objGroundList: MutableList<OBJLoader.OBJMesh> = ground.objects[0].meshes
+
+
+        //val listeMesh: MutableList<Mesh> = objGround
 
         OBJLoader.reverseWinding(objSphere)
         OBJLoader.recalculateNormals(objSphere)
@@ -111,20 +113,21 @@ class Scene(private val window: GameWindow) {
 
         val vertexAttributes = arrayOf<VertexAttribute>(attrPos, attrTC, attrNorm)
 
-       //1.3.1 c): Vertex- und Indexdaten als Arrays definieren
+        //1.3.1 c): Vertex- und Indexdaten als Arrays definieren
         var vertexDataKreis  = objSphere.vertexData //get vertexdata
         var indexDataKreis = objSphere.indexData   //get indexddata
 
         var vertexDataGround = objGround.vertexData //get vertexdata
         var indexDataGround= objGround.indexData   //get indexddata
 
-       /* m4Boden.scale(0.03f)
+        /* m4Boden.scale(0.03f)
         m4Boden.rotateX(90f)*/
+
 
 
         boden = Mesh(objGround.vertexData, objGround.indexData, vertexAttributes)
         bodenRend= Renderable(meshList = objGroundList)
-       // bodenRend.meshList.add(boden)
+        // bodenRend.meshList.add(boden)
 
 
         m4Kugel.scale(0.5f)
@@ -136,12 +139,11 @@ class Scene(private val window: GameWindow) {
 
 
         /** 2.4.2 */
-        var tronCamera : TronCamera
-       // tronCamera.translateLocal()
-        
 
+        val tronCamera : TronCamera
 
-
+        tronCamera.rotateLocal(-20f,0f,0f)
+        tronCamera.translateLocal(Vector3f(0.0f,0.0f,4.0f))
 
     }
 
