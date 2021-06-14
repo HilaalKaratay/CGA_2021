@@ -5,7 +5,7 @@ import cga.exercise.components.shader.ShaderProgram
 import org.joml.Matrix4f
 
 /** 2.4.1 */
-class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Float, var farPlane: Float) :Transformable(), ICamera {
+abstract class TronCamera (var fieldOfView : Float, var aspect: Float, var nearPlane: Float, var farPlane: Float) :Transformable(), ICamera {
 
     fun TronCam() {
         this.fieldOfView = Math.toRadians(90.0).toFloat()

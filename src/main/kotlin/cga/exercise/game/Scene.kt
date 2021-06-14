@@ -23,7 +23,7 @@ class Scene(private val window: GameWindow) {
     var meshname : Mesh
     var kreisRend : Renderable
     var kreis : Mesh
-
+   // var tronCamera: TronCamera
     var boden : Mesh
     var bodenRend : Renderable
 
@@ -79,9 +79,9 @@ class Scene(private val window: GameWindow) {
         data class Vertex(val position: Vector3f, val texCoord: Vector2f, val normal: Vector3f)
 
         //Aufgabe 1.2.5: Gegen den Uhrzeigersinn def. Dreiecke rendern
-        /*glEnable (GL_CULL_FACE)
+        glEnable (GL_CULL_FACE)
         glFrontFace (GL_CCW)
-        glCullFace (GL_BACK)*/
+        glCullFace (GL_BACK)
 
 
         // Aufgabe 1.3 Object Handeling
@@ -96,9 +96,6 @@ class Scene(private val window: GameWindow) {
 
         val objGround: OBJLoader.OBJMesh= ground.objects[0].meshes[0]
         val objGroundList: MutableList<OBJLoader.OBJMesh> = ground.objects[0].meshes
-
-
-        //val listeMesh: MutableList<Mesh> = objGround
 
         OBJLoader.reverseWinding(objSphere)
         OBJLoader.recalculateNormals(objSphere)
@@ -120,30 +117,28 @@ class Scene(private val window: GameWindow) {
         var vertexDataGround = objGround.vertexData //get vertexdata
         var indexDataGround= objGround.indexData   //get indexddata
 
-        /* m4Boden.scale(0.03f)
-        m4Boden.rotateX(90f)*/
-
-
+        m4Boden.scale(0.3f)
+        m4Boden.rotateX(90f)
+        m4Kugel.scale(9f)
 
         boden = Mesh(objGround.vertexData, objGround.indexData, vertexAttributes)
-        bodenRend= Renderable(meshList = objGroundList)
-        // bodenRend.meshList.add(boden)
 
 
-        m4Kugel.scale(0.5f)
+
         //1.3.1 d)
         // use plain data arrays to create a mesh
         kreis = Mesh (objSphere.vertexData,objSphere.indexData,vertexAttributes)
-        kreisRend = Renderable(kreis)
-       // kreisRend.meshList.add()
 
+        var bodenArray = mutableListOf<Mesh>(boden,kreis)
 
+        bodenRend = Renderable(mutableListOf(boden))
+        kreisRend = Renderable(mutableListOf(kreis))
+        kreisRend.meshList.add(kreis)
+        bodenRend.meshList.add(boden)
         /** 2.4.2 */
 
-        val tronCamera : TronCamera
-
-        tronCamera.rotateLocal(-20f,0f,0f)
-        tronCamera.translateLocal(Vector3f(0.0f,0.0f,4.0f))
+      //  tronCamera.rotateLocal(-20f,0f,0f)
+      //  tronCamera.translateLocal(Vector3f(0.0f,0.0f,4.0f))
 
     }
 
@@ -151,16 +146,17 @@ class Scene(private val window: GameWindow) {
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
         //1.2.3 welcher Shader = staticShader
-        //staticShader.use()
-        //staticTron.use()
+        staticShader.use()
+        staticTron.use()
 
         //meshhaus.render()
         //meshname.render()
 
-        kreis.render(staticTron)
 
-        staticTron.setUniform("model_matrix", m4Boden, false)
         bodenRend.render(staticTron)
+        staticTron.setUniform("model_matrix", m4Boden, false)
+
+        kreisRend.render(staticTron)
         staticTron.setUniform("model_matrix", m4Kugel, false)
     }
 
@@ -190,3 +186,4 @@ class Scene(private val window: GameWindow) {
 
     fun cleanup() {}
 }
+

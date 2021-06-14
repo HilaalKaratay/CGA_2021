@@ -1,8 +1,11 @@
 package cga.framework
 
+import cga.exercise.components.shader.ShaderProgram
 import org.joml.Math
 import org.joml.Vector2f
 import org.joml.Vector3f
+import org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray
+import org.lwjgl.opengl.GL11.*
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -367,7 +370,6 @@ object OBJLoader {
         fun indexCount(): Int {
             return indices.size
         }
-
 
     }
 
